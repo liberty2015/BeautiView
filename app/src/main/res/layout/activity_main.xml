@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.an_liberty.luguianview.MainActivity">
+
+    <com.an_liberty.luguianview.view.BeautyGroup
+        app:btnAngle="90"
+        android:padding="0dp"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.an_liberty.luguianview.view.BeautyView
+            android:layout_width="wrap_content"
+            app:btnColor="@color/leftColor"
+            app:btnImg="@mipmap/april"
+            app:btnTxt="四月"
+            app:btnTxtSize="20sp"
+            app:btnTxtColor="@color/colorPrimary"
+            android:layout_height="100dp" />
+        <com.an_liberty.luguianview.view.BeautyView
+            android:layout_width="wrap_content"
+            app:btnColor="@color/colorPrimary"
+            app:btnImg="@mipmap/girl"
+            app:btnTxt="美女"
+            app:btnTxtSize="20sp"
+            android:layout_height="100dp" />
+    </com.an_liberty.luguianview.view.BeautyGroup>
+
+</RelativeLayout>

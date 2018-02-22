@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BeautyGroup">
+        <attr name="btnAngle" format="float|reference"/>
+    </declare-styleable>
+    <declare-styleable name="BeautyView">
+        <attr name="btnTxt" format="string|reference"/>
+        <attr name="btnTxtSize" format="dimension|reference"/>
+        <attr name="btnTxtColor" format="color|reference"/>
+        <attr name="btnImg" format="reference"/>
+        <attr name="btnColor" format="color|reference"/>
+        <attr name="btnBorderColor" format="color|reference"/>
+        <attr name="btnBorderWidth" format="integer|reference"/>
+        <attr name="btnUpWidth" format="integer|reference"/>
+    </declare-styleable>
+</resources>
