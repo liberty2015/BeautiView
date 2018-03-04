@@ -20,6 +20,7 @@ import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -78,7 +79,7 @@ public class BeautyView extends View {
     }
 
     private void init(AttributeSet attrs) {
-        setLayerType(LAYER_TYPE_HARDWARE, null);
+//        setLayerType(LAYER_TYPE_HARDWARE, null);
         shapePaint = new Paint();
         shapePaint.setAntiAlias(true);
         TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.BeautyView);
@@ -191,6 +192,7 @@ public class BeautyView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+
         drawShape(canvas);
         drawImg(canvas);
         if (!isClick)
@@ -271,6 +273,7 @@ public class BeautyView extends View {
 
     private void drawShape(Canvas canvas) {
         int save = canvas.save();
+
         if (shapePath == null) {
             shapePath = new Path();
             shapeBorderPath = new Path();
@@ -291,9 +294,9 @@ public class BeautyView extends View {
                         shapePath.lineTo(getRight(), getBottom());
                         shapePath.lineTo(getLeft(), getBottom());
 
-                        shapeBorderPath.moveTo(getLeft() - distance1, getTop());
-                        shapeBorderPath.lineTo((float) (Math.round(getRight() - Math.abs(distance))), getTop());
-                        shapeBorderPath.lineTo(getRight(), getBottom());
+                        shapeBorderPath.moveTo(getLeft() - distance1, getTop()+borderWidth/2);
+                        shapeBorderPath.lineTo((float) (Math.round(getRight() - Math.abs(distance))-borderWidth/2), getTop()+borderWidth/2);
+                        shapeBorderPath.lineTo(getRight()-borderWidth/2, getBottom());
                     }
                     break;
                     case RIGHT: {
@@ -302,9 +305,9 @@ public class BeautyView extends View {
                         shapePath.lineTo(getRight() - distance1, getBottom());
                         shapePath.lineTo(getLeft() - distance1, getBottom());
 
-                        shapeBorderPath.moveTo(getLeft() - distance1, getBottom());
-                        shapeBorderPath.lineTo((float) distance, getTop());
-                        shapeBorderPath.lineTo(getRight(), getTop());
+                        shapeBorderPath.moveTo(getLeft() - distance1+borderWidth/2, getBottom());
+                        shapeBorderPath.lineTo((float) distance+borderWidth/2, getTop()+borderWidth/2);
+                        shapeBorderPath.lineTo(getRight()- distance1, getTop()+borderWidth/2);
                     }
                     break;
                 }
@@ -314,12 +317,12 @@ public class BeautyView extends View {
                     case LEFT: {
                         shapePath.moveTo(getLeft(), getTop());
                         shapePath.lineTo(getRight(), getTop());
-                        shapePath.lineTo((float) (getRight() - distance), getBottom());
+                        shapePath.lineTo((float) (getRight() + distance), getBottom());
                         shapePath.lineTo(getLeft(), getBottom());
 
-                        shapeBorderPath.moveTo(getLeft(), getTop());
-                        shapeBorderPath.lineTo(getRight(), getTop());
-                        shapeBorderPath.lineTo((float) (getRight() - distance), getBottom());
+                        shapeBorderPath.moveTo(getLeft(), getTop()+borderWidth/2);
+                        shapeBorderPath.lineTo(getRight()-borderWidth/2, getTop()+borderWidth/2);
+                        shapeBorderPath.lineTo((float) (getRight() + distance-borderWidth/2), getBottom());
                     }
                     break;
                     case RIGHT: {
@@ -330,9 +333,9 @@ public class BeautyView extends View {
                         //                shapePath.lineTo(((ViewGroup) getParent()).getChildAt(0).getRight()-distance1, getBottom());
                         shapePath.lineTo((float) (-distance), getBottom());
 
-                        shapeBorderPath.moveTo((float) distance, getBottom());
-                        shapeBorderPath.lineTo(getLeft(), getTop());
-                        shapeBorderPath.lineTo(getRight(), getTop());
+                        shapeBorderPath.moveTo((float) -distance+borderWidth/2, getBottom());
+                        shapeBorderPath.lineTo(getLeft()- distance1+borderWidth/2, getTop()+borderWidth/2);
+                        shapeBorderPath.lineTo(getRight()- distance1, getTop()+borderWidth/2);
                     }
                     break;
                 }
@@ -373,16 +376,20 @@ public class BeautyView extends View {
         shapePaint.setColor(btnColor);
     }
 
+    private int borderWidth=10;
+
     private void drawShapeBorder(Canvas canvas) {
         if (shapeBorderPaint==null){
             shapeBorderPaint=new Paint(Paint.ANTI_ALIAS_FLAG);
             shapeBorderPaint.setStrokeJoin(Paint.Join.ROUND);
             shapeBorderPaint.setStyle(Paint.Style.STROKE);
-            shapeBorderPaint.setStrokeWidth(10);
+            shapeBorderPaint.setStrokeWidth(borderWidth);
             borderPaintColor(btnColor,shapeBorderPaint);
         }
 
         if (shapeBorderPath != null) {
+            shapeBorderPaint.setShadowLayer(5,5,5,Color.parseColor("#F7E413"));
+
             canvas.drawPath(shapeBorderPath,shapeBorderPaint);
         }
     }
@@ -448,4 +455,21 @@ public class BeautyView extends View {
         return height;
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN:{
+                isClick=true;
+                invalidate();
+            }
+            break;
+            case MotionEvent.ACTION_UP:{
+                isClick=false;
+                invalidate();
+            }
+            break;
+        }
+
+        return super.onTouchEvent(event);
+    }
 }
